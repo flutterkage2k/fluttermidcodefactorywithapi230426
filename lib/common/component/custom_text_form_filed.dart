@@ -46,6 +46,7 @@ class CustomTextFormField extends StatelessWidget {
         //false - 배경색 없음
         //true - 배경색 있음.
         border: baseBorder,
+        enabledBorder: baseBorder,
         focusedBorder: baseBorder.copyWith(
           borderSide: baseBorder.borderSide.copyWith(
             color: PRIMARY_COLOR,
