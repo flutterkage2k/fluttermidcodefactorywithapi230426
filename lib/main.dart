@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fluttermidcodefactorywithapi230426/common/component/custom_text_form_filed.dart';
+import 'package:fluttermidcodefactorywithapi230426/user/view/login_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
-  runApp(_App());
+  runApp(const _App());
 }
 
 class _App extends StatelessWidget {
@@ -11,23 +12,13 @@ class _App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CustomTextFormField(
-              hintText: 'email',
-              onChanged: (String value) {},
-            ),
-            CustomTextFormField(
-              hintText: 'password',
-              onChanged: (String value) {},
-            ),
-          ],
+      theme: ThemeData(
+        textTheme: GoogleFonts.notoSansTextTheme(
+          Theme.of(context).textTheme,
         ),
       ),
+      debugShowCheckedModeBanner: false,
+      home: const LoginScreen(),
     );
   }
 }
