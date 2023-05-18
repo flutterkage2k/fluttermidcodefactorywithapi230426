@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttermidcodefactorywithapi230426/user/view/login_screen.dart';
+import 'package:fluttermidcodefactorywithapi230426/user/view/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -18,7 +18,7 @@ class _App extends StatelessWidget {
         ),
       ),
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }

@@ -1,13 +1,31 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttermidcodefactorywithapi230426/common/component/custom_text_form_filed.dart';
 import 'package:fluttermidcodefactorywithapi230426/common/const/colors.dart';
+import 'package:fluttermidcodefactorywithapi230426/common/const/data.dart';
 import 'package:fluttermidcodefactorywithapi230426/common/layout/default_layout.dart';
+import 'package:fluttermidcodefactorywithapi230426/common/view/root_tab.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  String username = '';
+  String password = '';
+
+  @override
   Widget build(BuildContext context) {
+    final dio = Dio();
+
+    // api server url
+    const userPath = 'api.kage2k.com';
+
     return DefaultLayout(
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior
@@ -31,20 +49,48 @@ class LoginScreen extends StatelessWidget {
                 ),
                 CustomTextFormField(
                   hintText: '이메일을 입력해주세요',
-                  onChanged: (String value) {},
+                  onChanged: (String value) {
+                    username = value;
+                  },
                 ),
                 const SizedBox(
                   height: 16.0,
                 ),
                 CustomTextFormField(
                   hintText: '비밀번호를 입력해주세요',
-                  onChanged: (String value) {},
+                  onChanged: (String value) {
+                    password = value;
+                  },
                 ),
                 const SizedBox(
                   height: 16.0,
                 ),
                 ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final rawString = '$username:$password';
+                    //test@codefactory.ai testtest
+                    Codec<String, String> stringToBase64 = utf8.fuse(base64);
+
+                    String token = stringToBase64.encode(rawString);
+
+                    final resp = await dio.post(
+                      'https://$userPath/auth/login',
+                      options: Options(headers: {
+                        'authorization': 'Basic $token',
+                      }),
+                    );
+
+                    final refreshToken = resp.data['refresh_token'];
+                    final accessToken = resp.data['access_token'];
+
+                    await storage.write(
+                        key: REFRESH_TOKEN_KEY, value: refreshToken);
+                    await storage.write(
+                        key: ACCESS_TOKEN_KEY, value: accessToken);
+
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (_) => const RootTab()));
+                  },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PRIMARY_COLOR,
                   ),
