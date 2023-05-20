@@ -28,8 +28,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return DefaultLayout(
       child: SingleChildScrollView(
-        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior
-            .onDrag, //키보드가 올라와있을때 스크롤을 내리면 키보드가 내려감.
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag, //키보드가 올라와있을때 스크롤을 내리면 키보드가 내려감.
         child: SafeArea(
           top: true,
           bottom: false,
@@ -80,16 +79,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       }),
                     );
 
-                    final refreshToken = resp.data['refresh_token'];
-                    final accessToken = resp.data['access_token'];
+                    final refreshToken = resp.data['refreshToken'];
+                    final accessToken = resp.data['accessToken'];
 
-                    await storage.write(
-                        key: REFRESH_TOKEN_KEY, value: refreshToken);
-                    await storage.write(
-                        key: ACCESS_TOKEN_KEY, value: accessToken);
+                    await storage.write(key: REFRESH_TOKEN_KEY, value: refreshToken);
+                    await storage.write(key: ACCESS_TOKEN_KEY, value: accessToken);
 
-                    Navigator.of(context).push(
-                        MaterialPageRoute(builder: (_) => const RootTab()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (_) => const RootTab()));
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: PRIMARY_COLOR,

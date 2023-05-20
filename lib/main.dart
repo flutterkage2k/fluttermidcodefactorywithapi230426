@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fluttermidcodefactorywithapi230426/user/view/splash_screen.dart';
+import 'package:fluttermidcodefactorywithapi230426/common/view/splash_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
