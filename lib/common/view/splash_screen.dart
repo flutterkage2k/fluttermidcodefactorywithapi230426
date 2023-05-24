@@ -4,6 +4,7 @@ import 'package:fluttermidcodefactorywithapi230426/common/const/data.dart';
 import 'package:fluttermidcodefactorywithapi230426/common/layout/default_layout.dart';
 import 'package:fluttermidcodefactorywithapi230426/common/view/root_tab.dart';
 import 'package:fluttermidcodefactorywithapi230426/user/view/login_screen.dart';
+import 'package:dio/dio.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -18,24 +19,43 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    // deleteToken();
     checkToken();
   }
 
-  void checkToken() async {
-    final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY);
-    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY);
+  void deleteToken() async {
+    await storage.deleteAll();
+  }
 
-    if (refreshToken == null || accessToken == null) {
+  void checkToken() async {
+    final refreshToken = await storage.read(key: REFRESH_TOKEN_KEY); //하루
+    final accessToken = await storage.read(key: ACCESS_TOKEN_KEY); //유효기간이 5분.
+
+    final dio = Dio();
+
+    //refreshToken의 만료인지 확인
+    try {
+      final resp = await dio.post(
+        'http://$ip/auth/token',
+        options: Options(
+          headers: {
+            'authorization': 'Bearer $refreshToken',
+          },
+        ),
+      );
+
+      await storage.write(key: ACCESS_TOKEN_KEY, value: resp.data['accessToken']);
+
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (_) => const LoginScreen(),
+          builder: (_) => RootTab(),
         ),
         (route) => false,
       );
-    } else {
+    } catch (e) {
       Navigator.of(context).pushAndRemoveUntil(
         MaterialPageRoute(
-          builder: (_) => const RootTab(),
+          builder: (_) => LoginScreen(),
         ),
         (route) => false,
       );

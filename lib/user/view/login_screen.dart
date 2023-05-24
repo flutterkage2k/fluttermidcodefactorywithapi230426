@@ -23,9 +23,6 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final dio = Dio();
 
-    // api server url
-    const userPath = 'api.kage2k.com';
-
     return DefaultLayout(
       child: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag, //키보드가 올라와있을때 스크롤을 내리면 키보드가 내려감.
@@ -73,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     String token = stringToBase64.encode(rawString);
 
                     final resp = await dio.post(
-                      'https://$userPath/auth/login',
+                      'http://$ip/auth/login',
                       options: Options(headers: {
                         'authorization': 'Basic $token',
                       }),
